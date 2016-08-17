@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "description": "Scan LAN network and print the activity to Slack.",
   "author": "Vis Virial <visvirial@gmail.com>",
+  "license": "MIT",
   "scripts": {
     "start": "node main.js"
   },
