@@ -1,0 +1,24 @@
+{
+	"slack": {
+		"endpoint": "WEBHOOK_URL",
+		"channel": "CHANNEL"
+	},
+	"users": {
+		"unknown": {
+			"label": "Unknown User",
+			"icon": ":dark_sunglasses:"
+		},
+		"satoshi": {
+			"label": "Satoshi Nakamoto",
+			"icon": "https://en.bitcoin.it/w/images/en/2/29/BC_Logo_.png"
+		}
+	},
+	"nodes": {
+		"12:34:56:78:90:ab": {
+			"owner": "satoshi",
+			"label": "Satoshi's Main Laptop"
+		}
+	},
+	"search_interval": 5000,
+	"threshold_time": 30000
+}
