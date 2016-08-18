@@ -3,6 +3,7 @@ var dns = require('dns');
 var async = require('async');
 var exec = require('child_process').exec;
 var Slack = require('slack-node');
+var moment = require('moment');
 
 var config = require('./config.json');
 
@@ -69,8 +70,13 @@ var slack_notify = function(node, type) {
 	var message = node.label + ' ' + (type=='connect' ? 'が接続しました' : 'が切断しました');
 	console.log('[' + new Date().toString() + '] ' + message);
 	var text = '';
-	text += '【' + node.label + '】\n';
-	text += node.hostname + ' / <http://' + node.ip + '/|' + node.ip + '> / ' + node.mac;
+	text += moment().format('YYYY/MM/DD HH:mm:ss.SS');
+	text += '\n';
+	text += node.hostname;
+	text += ' / ';
+	text += '<http://' + node.ip + '/|' + node.ip + '>';
+	text += ' / ';
+	text += node.mac;
 	slack.webhook({
 		channel: config.slack.channel,
 		username: node.user.label,
@@ -78,10 +84,10 @@ var slack_notify = function(node, type) {
 		attachments: [{
 			fallback: message,
 			color: (type=='connect' ? 'good' : 'danger'),
-			text: text,
+			text: node.label,
+			footer: text,
 		}],
 	}, function(err, res) {
-		
 	});
 };
 
