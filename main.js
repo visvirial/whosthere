@@ -68,8 +68,8 @@ var list_nodes = function(cb) {
  * Send notification to Slack.
  */
 var slack_notify = function(node, type) {
-	var message = node.label + ' ' + (type=='connect' ? 'が接続しました' : 'が切断しました');
-	console.log('[' + new Date().toString() + '] ' + message);
+	var message = sprintf('%s %s', node.label, (type=='connect' ? 'が接続しました' : 'が切断しました'));
+	console.log(sprintf('[%s] %s', moment().format('YYYY/MM/DD HH:mm:ss.SS'), message));
 	var text = sprintf(
 		'%1$s\n%2$s / <http://%3$s/|%3$s> / %4$s',
 		moment().format('YYYY/MM/DD HH:mm:ss.SS'),
@@ -104,10 +104,11 @@ var slack_list = function() {
 	nodes.sort(function(a, b) {
 		return a.owner.localeCompare(b.owner);
 	});
-	var text = '';
+	var nodeTexts = [];
 	nodes.forEach(function(n) {
-		text += sprintf('[%s] %s\n', n.user.label, n.label);
+		nodeTexts.push(sprintf('[%s] %s', n.user.label, n.label));
 	});
+	var text = nodeTexts.join('\n');
 	slack.webhook({
 		channel: config.slack.channel,
 		username: 'whosthere',
