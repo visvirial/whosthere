@@ -125,13 +125,13 @@ var slack_list = function() {
 /**
  * Check current nodes repeatedly, and print the results.
  */
-var check_nodes = function() {
+var check_nodes = function(isFirst) {
 	list_nodes(function(nodes) {
 		var changed = false;
 		// Explorer currently connected nodes.
 		for(var mac in nodes) {
 			if(current_nodes[mac] == undefined) {
-				slack_notify(nodes[mac], 'connect');
+				if(!isFirst) slack_notify(nodes[mac], 'connect');
 				changed = true;
 			}
 			current_nodes[mac] = nodes[mac];
@@ -140,7 +140,7 @@ var check_nodes = function() {
 		// Search for disconnected nodes.
 		for(var mac in current_nodes) {
 			if(new Date().getTime() - current_nodes[mac].last_seen > config.threshold_time) {
-				slack_notify(current_nodes[mac], 'disconnect');
+				if(!isFirst) slack_notify(current_nodes[mac], 'disconnect');
 				changed = true;
 				delete current_nodes[mac];
 			}
@@ -151,5 +151,5 @@ var check_nodes = function() {
 };
 
 // Launch main loop.
-check_nodes();
+check_nodes(true);
 
