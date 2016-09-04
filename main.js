@@ -55,7 +55,12 @@ var list_nodes = function(cb) {
 			nodes[mac].ip = ip;
 			nodes[mac].product = product;
 			dns.reverse(ip, function(err, hostname) {
-				if(!err) nodes[mac].hostname = hostname;
+				if(!err) {
+					nodes[mac].hostname = hostname[0];
+					if(nodes[mac].owner == 'unknown') {
+						nodes[mac].label = nodes[mac].hostname.split('.')[0];
+					}
+				}
 				cb2();
 			});
 		}, function(err) {
